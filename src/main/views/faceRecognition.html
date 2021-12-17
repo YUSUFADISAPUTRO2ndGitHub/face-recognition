@@ -66,7 +66,7 @@
 <body>
   <div class="center-content page-container">
 
-    <p> Reference Image: </p>
+    <p> Your true face image: </p>
     <div style="position: relative" class="margin">
       <img id="refImg" src="" style="max-width: 800px;" />
       <canvas id="refImgOverlay" class="overlay"/>
@@ -80,7 +80,7 @@
         </div>
       </div>
     </div>
-    <p> Query Image: </p>
+    <p>Compare to face image: </p>
     <div style="position: relative" class="margin">
       <img id="queryImg" src="" style="max-width: 800px;" />
       <canvas id="queryImgOverlay" class="overlay"/>
@@ -185,12 +185,24 @@
         // console.log(faceMatcher.findBestMatch(descriptor)._distance);
         console.log("start");
         const drawBox = new faceapi.draw.DrawBox(detection.box, options)
+        console.log(resizedResults.length);
         if(faceMatcher.findBestMatch(descriptor)._distance >= 0.50){
           drawBox.draw(canvas, "#B71C1C")
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'Face do not match'
+          })
+        }else if(resizedResults.length > 1){
+          if(faceMatcher.findBestMatch(descriptor)._distance >= 0.50){
+            drawBox.draw(canvas, "#B71C1C")
+          }else{
+            drawBox.draw(canvas, "#18FFFF")
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'I found more than 1 face'
           })
         }else{
           drawBox.draw(canvas, "#18FFFF")
